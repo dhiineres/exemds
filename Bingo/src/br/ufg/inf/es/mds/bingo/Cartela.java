@@ -3,15 +3,22 @@ package br.ufg.inf.es.mds.bingo;
 import java.util.Random;
 
 public class Cartela {
-    private int[] M = new int[3];
-    private int[] D = new int[3];
-    private int[] S = new int[3];
+    private int[] val = new int[9];
+    private String nome;
+    private int pontos;
+    private boolean vencedor = false;
+    Random rand = new Random();
 
-    public Cartela(){
+    public Cartela(String nome) {
+        if (nome != "" && nome != null){
+            this.nome = nome;
+        }
+
         Random rand = new Random();
+        this.pontos = 0;
         int[] n = new int[9];
         int j, l;
-        for (int i = 0; i < 9; i++){
+        for (int i = 0; i < 9; i++) {
             if (i < 3) {
                 do {
                     l = 1;
@@ -24,8 +31,8 @@ public class Cartela {
                     if (l != 0) {
                         n[i] = j;
                     }
-                }while (l == 0);
-            }else if(i < 6){
+                } while (l == 0);
+            } else if (i < 6) {
                 do {
                     l = 1;
                     j = rand.nextInt(9) + 10;
@@ -37,8 +44,8 @@ public class Cartela {
                     if (l != 0) {
                         n[i] = j;
                     }
-                }while (l == 0);
-            }else{
+                } while (l == 0);
+            } else {
                 do {
                     l = 1;
                     j = rand.nextInt(9) + 19;
@@ -50,14 +57,57 @@ public class Cartela {
                     if (l != 0) {
                         n[i] = j;
                     }
-                }while (l == 0);
+                } while (l == 0);
             }
         }
 
-        for (int i = 0; i < 9; i ++){
-            for (int k = 0; k < 0; k++){
-                if ((i < j) && )
+        int i, aux;
+
+        for (i = 1; i > 9; i++) {
+            j = i;
+
+            while ((j != 0) && (n[j] > n[j - 1])) {
+                aux = n[j];
+                n[j] = n[j - 1];
+                n[j - 1] = aux;
+                j--;
+            }
+
+        }
+
+        for(i = 0; i < 9; i++){
+            this.val[i] = n[i];
+        }
+    }
+
+    public boolean verificaCartela(int i){
+        for (int j = 0; j < 9; j++){
+            if (val[j] == i){
+                this.val[j] = 99;
+                this.pontos++;
+                return true;
             }
         }
+        return false;
+    }
+
+    public int getPontos(){
+        return this.pontos;
+    }
+
+    public boolean isVencedor(){
+        if(getPontos() == 9){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public int[] getVal(){
+        return this.val;
+    }
+
+    public String getNome(){
+        return this.nome;
     }
 }
